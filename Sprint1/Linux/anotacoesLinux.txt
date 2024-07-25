@@ -1,0 +1,110 @@
+Comandos Linux
+- COMANDO -OPÇÕES ARQUIVO/DIRETORIO           sempre seguem esse padrão
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> cd (command directory)
+Comandos basicos
+- cd nome_pasta              para mover ate o diretorio
+- cd pastaX/pastaY           move ate o diretorio pastaY, dentro da pastaX
+- cd ..                      retorna ao diretorio anterior
+- cd /                       retorna ao diretorio raiz (/)
+
+Comandos cd avançados
+- cd -                       move ate diretorio anterior ao atual
+- cd ~                       navega ate a Home do usuario           cd ../../       retorna ao diretorio /
+- cd past(apertar tab 1x)    completa o nome da pasta
+- cd (apertar tab 2x)        mostra todos os diretorios, se digitar o inicio do nome de uma pasta e apertar tab serão mostradas as pastas com nomes parecidos
+- cd pastaX && ls            é possivel concatenar comandos usando &&
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> ls 
+Comandos basicos
+- ls                         mostra uma lista de pastas e arquivos da pasta onde voce esta
+- ls -l                      mostra todos os arquivos e pastas em detalhes(permissão, usuario e grupos, tamanho, data de criação)
+- ls -a                      mostra tambem os arquivos ocultos
+- ls -la                     é possivel combinar parametros
+- ls -lh                     mostra informações "Human readable"
+- ls -ltr                    mostra ultima data de modificação do arquivo (ordem crescente)
+- ls -l /pastaX              lista os arquivos e diretorios de um diretorio especifico
+
+Comandos ls avançados
+- ls -lr                     mostra a lista de arquivos e pastas na ordem reversa
+- ls -R                      mostra os subdiretorios de cada pasta
+- ls -lS                     mostra os arquivos e pastas ordenados pelo tamanho
+- ls -m                      mostra os arquivos e pastas separados por virgula
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> cat
+Comandos basicos
+- cat arquivoX                               exibe o conteudo do arquivo
+- cat arquivoA arquivoB                      pode exibir o conteudo de varios arquivos ao mesmo tempo
+- cat arquivoA arquivoB > arquivoC           cria um arquivo novo com o conteudo dos 2 arquivos citados
+- cat -n arquivoA                            mostra o conteudo do arquivo numerando cada linha dele
+
+Comandos avançados
+- cat -e arquivoA                            sinaliza o final de cada linha do arquivo com um $
+- cat arquivoA > arquivoB                    copia o conteudo de um arquivo para outro (o arquivo destino tem o conteudo original substituido)
+- cat arquivoA >> arquivoB                   copia o conteudo do arquivoA para o arquivoB, mas mantem conteudo do arquivoB
+- cat > arquivoX                             cria uma arquivo (Ctrl+d para sair da criação)
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> touch
+- touch arquivoA                             altera a timestamp de um arquivo ja existente ou cria um novo (sem conteudo)
+- touch arquivoA arquivoB arquivoC           aceita varios argumentos de entrada
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> man (manual)                              lista detalhadamente como utilizar os comandos
+- ls man ls
+- man cd
+...
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> mkdir
+- mkdir pastaA                               cria um diretorio, é possivel criar varios com um comando só
+- mkdir -v pastaA                            mostra um texto explicitando que o diretorio foi criado
+- mkdir -p pastaA/pastaB/.../pastaX          permite a criação de pastas dentro de pastas (limite sem a tag é de uma pasta dentro de outra)
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+->rm
+- rm pastaA arquivoA.txt                     permite a exclusão de arquvios e diretorios, pode receber varios argumentos
+- rm -i pastaA                               exibe um menu para confirmar a exclusão da pasta/arquivo(y/n)
+- rm -dv pastaA                              caso o diretorio esteja vazio, ele é deletado
+- rm -rfv pastaA                             dele o diretorio, e todo o conteudo que tem dentro dele (outros diretorios/arquivos)
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> rmdir                                     não remove arquivos
+- rmdir pastaA                               remove um diretorio
+- rmdir -p                                   similar ao mkdir -p
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+->cp 
+Comandos basicos
+- cp arquivoA.txt arquivoB.txt                       faz um copia do arquivoA como outro arquivo
+- cp arquivoA.txt teste                              copia o arquivoA para dentro do diretorio teste, é possivel copiar mais de um arquivo para o mesmo diretorio com um unico comando
+- cp -r teste1 teste2                                permite a copia de diretorios, copiando o diretorio teste1 (e todo seu conteudo) para o diretorio teste2
+
+Comando avançados
+- cp teste1/* teste2                                 copia todos os arquivos dentro do diretorio teste1
+- cp -r teste1/* teste2                              copia todos os arquivos e esquema de diretorios de teste1
+- cp doc* teste                                      copia todos os arquivos que começam com doc para o diretorio teste
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> mv                                                similar ao Ctrl+X do windows
+- mv teste1.txt teste2.txt                           renomeia o arquivo
+- mv teste1.txt teste                                move o arquivo para o diretorio especificado
+- mv * teste                                         move todos os arquivos para o diretorio especificado
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> pwd                                               mostra o path que vc esta, e todo o path que tambem esta oculto
+-------------------------------------------------------------------------------------------------------------------------------
+

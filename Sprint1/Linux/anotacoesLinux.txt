@@ -2,6 +2,9 @@ Comandos Linux
 - COMANDO -OPÇÕES ARQUIVO/DIRETORIO           sempre seguem esse padrão
 
 -------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
+COMANDOS DE NAVEGAÇÃO/CRIAÇÃO
+
 -> cd (command directory)
 Comandos basicos
 - cd nome_pasta              para mover ate o diretorio
@@ -108,3 +111,55 @@ Comando avançados
 -> pwd                                               mostra o path que vc esta, e todo o path que tambem esta oculto
 -------------------------------------------------------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
+COMANDO DE ATUALIZAÇÃO/INSTALAÇÃO DE APPS/PACOTES
+- sudo apt-get update                                atualiza os repositorios
+- sudo apt-get update                                atualiza os apps
+- sudo apt-get install nomeApp                       instalando um app novo (primeiro testar um comando para ver se ja esta instalado)
+- sudo apt-get purge nomeApp                         remove o app instalado
+- sudo apt-get dist-upgrade                          atualiza a versão do Linux (remove apps não compativeis)
+- sudo apt-get autoremove                            remove automativamente pacotes que não estao sendo utilizados
+- apt-cache search nomeApp                           busca a lista de app/pacotes
+-------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
+COMANDO DE FILTRO/BUSCA DE ARQUIVOS
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> head/tail                                              head para o topo do arquivo, tail para o fim do arquivo
+- head/tail docA                                          mostra o topo de um documento de texto
+- head/tail -n X docA                                     mostra o texto ate uma linha especifica (sendo X o numero da linha)
+- head/tail -n X docA > docB                              copia o conteudo de uma linha especifica e salva em outro documento
+
+- tail -f docA                                            mostra atualizações em tempo real do arquivo especificado
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> grep
+- grep 'palavraX' docA                                    busca uma palavra especifica no documento (é mostrado o paragrafo que ela esta)
+- grep -i 'palavraX' docA                                 ignora a case sensitive do comando grep
+- grep -c 'palavraX' docA                                 mostra quantas vezes a palavra aparece no doc
+- grep 'palavraX' -r                                      ira buscar a palavra especificada por todos os diretorios e docs subjacentes (recursivamente)
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> find
+- find -name 'docA'                                       busca o arquivo/diretorio em todos diretorios subjacentes (recursivamente)
+- find -iname 'docA'                                      ignora a case sensitive do comando
+- find -name 'doc*'                                       busca todos os arquivos/diretorios que começando com 'doc'
+- find -empty                                             busca todas os diretorios vazios
+- find -type d/f                                          busca especificamente um documento (f) ou um diretorio(r)
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> locate
+- locate doc.txt                                          busca o arquivo ou diretorio no Database (Database não exibi arquivos recentes)
+- locate -S                                               exibe informações do Database
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+------------------------------- !! repete o ultimo comando utilizado no terminal-----------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------

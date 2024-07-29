@@ -163,3 +163,29 @@ COMANDO DE FILTRO/BUSCA DE ARQUIVOS
 -------------------------------------------------------------------------------------------------------------------------------
 ------------------------------- !! repete o ultimo comando utilizado no terminal-----------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+EDITORES DE TEXTO
+-> nano
+- nano                                                     abre o editor de texto
+- nano docA                                                abre um arquivo especifico para modificar
+demais instruções estao marcadas no proprio editor
+-------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> vim
+- vim docA                                                 cria ou abre um doc especifico
+
+- o vim possui dois modos, um de comandos e outro de inserção, para entrar no de inserção é preciso apertar I, para sair desse modo, ESC
+
+- Modo comando: 
+":x" salva e fecha o arquivo
+":w" salva o arquivo sem fecha-lo
+":q" fecha o arquivo
+"dd" apertar d duas vezes deleta a linha que vc esta
+"d para cima/baixo" apertar d e dps para cima ou para baixo remove a linha de cima ou de baixo
+"u" apertando u vc desfaz alterações (Ctrl+Z, undo)
+"Ctrl+R" refez as alterações (redo)
+"/palavra" mostra a primeira palavra, ao digitar enter outras vezes ele vai para as seguintes
+":%s/palavra/palavraNova/g"  substitui a ocorrencia de uma palavra por outras palavras (sem o % ele muda apenas uma linha)
+

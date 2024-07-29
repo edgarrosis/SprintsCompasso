@@ -61,7 +61,7 @@ Comandos avançados
 
 -------------------------------------------------------------------------------------------------------------------------------
 -> man (manual)                              lista detalhadamente como utilizar os comandos
-- ls man ls
+- man ls
 - man cd
 ...
 -------------------------------------------------------------------------------------------------------------------------------
@@ -189,3 +189,10 @@ demais instruções estao marcadas no proprio editor
 "/palavra" mostra a primeira palavra, ao digitar enter outras vezes ele vai para as seguintes
 ":%s/palavra/palavraNova/g"  substitui a ocorrencia de uma palavra por outras palavras (sem o % ele muda apenas uma linha)
 
+-------------------------------------------------------------------------------------------------------------------------------
+CRIAÇÃO DE USUARIOS
+
+- sudo adduser nomeUsuario                                criação de usuario
+- sudo userdel -- remove nomeUsuario                      deleção de usuario
+- usermod                                                 modificar usuarios
+-------------------------------------------------------------------------------------------------------------------------------

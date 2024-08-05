@@ -1,0 +1,64 @@
+Data do sistema: 2024/08/01 15:27
+Data do primeiro registro de venda: 01/01/2023
+Data do último registro de venda: 31/01/2023
+Quantidade total de itens diferentes vendidos: 67
+Primeiras 10 linhas do arquivo backup-dados-20240801.csv:
+id,produto,quantidade,preço,data
+1,camiseta,2,29.90,01/01/2023
+2,calça,5,80.00,02/01/2023
+3,sapato,3,100.00,03/01/2023
+4,meia,20,5.00,04/01/2023
+5,cinto,8,15.00,05/01/2023
+6,camisa,7,40.00,06/01/2023
+7,bermuda,6,50.00,07/01/2023
+8,tênis,4,120.00,08/01/2023
+9,bone,12,10.00,09/01/2023
+10,casaco,2,150.00,10/01/2023
+Data do sistema: 2024/08/02 15:27
+Data do primeiro registro de venda: 01/02/2023
+Data do último registro de venda: 25/04/2023
+Quantidade total de itens diferentes vendidos: 67
+Primeiras 10 linhas do arquivo backup-dados-20240802.csv:
+id,produto,quantidade,preço,data
+1,camiseta,5,35.00,01/02/2023
+2,calça,8,90.00,02/02/2023
+3,sapato,4,120.00,03/02/2023
+4,meia,15,4.50,04/02/2023
+5,cinto,10,18.00,05/02/2023
+6,camisa,9,45.00,06/02/2023
+7,bermuda,7,55.00,07/02/2023
+8,tênis,5,130.00,08/02/2023
+9,bone,14,12.00,09/02/2023
+10,casaco,3,160.00,10/02/2023
+Data do sistema: 2024/08/03 15:27
+Data do primeiro registro de venda: 01/01/2023
+Data do último registro de venda: 31/01/2023
+Quantidade total de itens diferentes vendidos: 67
+Primeiras 10 linhas do arquivo backup-dados-20240803.csv:
+id,produto,quantidade,preço,data
+1,camiseta,3,35.90,01/01/2023
+2,calça,6,85.00,02/01/2023
+3,sapato,4,110.00,03/01/2023
+4,meia,25,5.50,04/01/2023
+5,cinto,10,17.00,05/01/2023
+6,camisa,8,45.00,06/01/2023
+7,bermuda,7,55.00,07/01/2023
+8,tênis,5,130.00,08/01/2023
+9,bone,13,12.00,09/01/2023
+10,casaco,3,160.00,10/01/2023
+Data do sistema: 2024/08/04 15:27
+Data do primeiro registro de venda: 01/06/2023
+Data do último registro de venda: 18/08/2023
+Quantidade total de itens diferentes vendidos: 67
+Primeiras 10 linhas do arquivo backup-dados-20240804.csv:
+id,produto,quantidade,preço,data
+1,camiseta,5,35.90,01/06/2023
+2,calça,7,85.00,02/06/2023
+3,sapato,4,110.00,03/06/2023
+4,meia,25,6.00,04/06/2023
+5,cinto,10,18.00,05/06/2023
+6,camisa,9,45.00,06/06/2023
+7,bermuda,7,55.00,07/06/2023
+8,tênis,5,130.00,08/06/2023
+9,bone,15,12.00,09/06/2023
+10,casaco,3,160.00,10/06/2023

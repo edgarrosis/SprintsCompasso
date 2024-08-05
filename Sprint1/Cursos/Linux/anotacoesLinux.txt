@@ -196,3 +196,10 @@ CRIAÇÃO DE USUARIOS
 - sudo userdel -- remove nomeUsuario                      deleção de usuario
 - usermod                                                 modificar usuarios
 -------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+-> ping google.com(8.8.8.8)                               mostra informaçõesda conexão com um site
+-> net stat
+-> ifcofig
+-> nslookup
+-> hostname -I

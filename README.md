@@ -1,8 +1,8 @@
 ## Apresentação
 
-Olá, sou **Edgar de Rosis da Silva**, atualmente cursando **Engenharia de Software na UFMS, polo em Campo Grande (Sexto Semestre)**, profissional motivado e capaz de navegar por situações de alto estresse e atingir os objetivos pontualmente, em busca de conhecimento e prática em diversas linhas de atuação, através da soma das experiências adquiridas, visando o crescimento profissional e contribuição ao sucesso da empresa. Meus Hobbies incluem jogos eletronicos, filmes, livros, séries, sair com amigos para beber/comer, viajar, entre outros. 
+Olá, sou **Edgar de Rosis da Silva**, atualmente cursando **Engenharia de Software na UFMS, polo em Campo Grande (6º semestre)**, profissional motivado e capaz de navegar por situações de alto estresse e atingir os objetivos pontualmente, em busca de conhecimento e prática em diversas linhas de atuação, através da soma das experiências adquiridas, visando o crescimento profissional e contribuição ao sucesso da empresa. Meus Hobbies incluem jogos eletronicos, filmes, livros, séries, sair com amigos para beber/comer, viajar, entre outros. 
 
-![Foto perfil](https://avatars.githubusercontent.com/u/33706301?v=4)
+<img width="200" src="https://avatars.githubusercontent.com/u/33706301?v=4">
 
 Minhas competencias incluem principalmente **Java, Android Studio (Java), Teste de Software, Teste Mutacional**, como tambem Git, MySQL, Postgres, Front-end (HTML, CSS, Javascript, React), Documentação de Software e Requisitos de Software, Docker, Python e C++.
 

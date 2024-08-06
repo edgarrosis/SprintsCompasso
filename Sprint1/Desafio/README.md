@@ -32,6 +32,11 @@ Este script realiza as seguintes tarefas:
     - Comprime o arquivo de backup e o relatorio gerado no dia. (linha 31)
     - Apaga o arquivo original de backup e o arquivo `dados_vendas.csv` do diretório `vendas`.
 
+É necessario que o pacote **.zip** esteja instalado, caso contrario, pode ser solucionado utilizando o comando:
+```sh
+sudo apt-get install zip
+```
+
 ### Código do Script
 - A linhas referenciadas se encontram no codigo a seguir: 
 ```sh

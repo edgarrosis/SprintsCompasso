@@ -1,7 +1,9 @@
 # 1. Instruções
 Para a reprodução do que foi feito no Desafio Final, é necessario: ter instalado um banco de dados postgres, por exemplo com o pgAdmin4 ou um banco sqlite, como o DB Browser que foi utlizado em alguns momentos durante a resolução do desafio. 
 
-Entao deve-se carregar o banco de dados com o arquivo `desafio_dump_MR.sql` e executa-lo como uma query em algum banco sqlite ou postgres.
+Entao deve-se carregar o banco de dados com o arquivo `desafio_dump_MR.sql` e executa-lo como uma query em algum banco sqlite ou postgres. 
+
+Ambos modelos entidade-relacionamento foram feitos utilizando o aplicativo `Br Modelo`.
 
 ## 1.1 Normalização do Banco de Dados
 

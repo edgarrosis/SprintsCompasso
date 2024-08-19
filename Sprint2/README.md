@@ -268,7 +268,10 @@ Com a organização de cada tabela disposta das seguintes formas:
 - [Quilometragem](/Sprint2/Evidencias/desafio/tab_quilometragem.png), [dados quilometragem](/Sprint2/Evidencias/desafio/DATA/QUILOMETRAGEM.csv);
 - [Locacao](/Sprint2/Evidencias/desafio/tab_locacao.png), [dados locacao](/Sprint2/Evidencias/desafio/DATA/LOCACAO.csv).
 
+E por fim o modelo Dimensional:
+![Modelo Dimensional](/Sprint2/Desafio/MER_DIMENSIONAL.png)
+
 # 5. Certificados
 - [Certificado SQL para Análise de Dados: Do básico ao avançado](/Sprint2/Certificados/Certificado_cursoSQL.jpg)
-- [Certificado AWS](/Sprint2/Certificados/Certificado_cursoAWS.pdf)
-- [Certificado Sprint 2](/Sprint2/Certificados/Certificado_Sprint2.jpg)
+- [Certificado AWS Partner: Sales Accreditation(Business)](/Sprint2/Certificados/Certificado_cursoAWS.pdf)
+- [Certificado Data & Analytics - PB - AWS](/Sprint2/Certificados/Certificado_Sprint2.jpg)

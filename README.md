@@ -18,11 +18,6 @@ Minhas competencias incluem principalmente **Java, Android Studio (Java), Teste 
 2. [Sprint 2](/Sprint2/README.md)
 ___
 
->Instruções:
->Para cada Sprint, crie um arquivo README.md na respectiva pasta. Este arquivo será o relato da sua entrega. Considere organizar neste arquivo a entrega do desafio, a apresentação dos códigos desenvolvidos, imagens que evidenciam a execução (se necessário) e as imagens dos certificados dos cursos solicitados.
-___
-
-
 >Dicas
 >- [Mark Down - Basic Syntax](https://www.markdownguide.org/basic-syntax/)
 >- [Github - Basic writing and formatting syntax](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)

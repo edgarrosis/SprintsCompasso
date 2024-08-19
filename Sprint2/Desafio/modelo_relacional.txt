@@ -1,0 +1,16 @@
+CLIENTE(idCliente, nomeCliente, cidadeCliente, estadoCliente, paisCliente)
+CARRO(idCarro, classiCarro, marcaCarro, modeloCarro, anoCarro, id_combustivelfk)
+QUILOMETRAGEM(id_km, kmCarro, id_carrokm_fk)
+COMBUSTIVEL(idcombustivel, tipoCombustivel)
+LOCACAO(idLocacao, dataLocacao, horaLocacao, qtdDiaria, vlrDiaria, dataEntrega, horaEntrega, id_clientefk, id_vendedorfk, id_carrofk)
+VENDEDOR(idVendedor, nomeVendedor, sexoVendedor, estadoVendedor)
+
+FK id_clientefk(LOCACAO) = PK idCliente(CLIENTE);
+
+FK id_vendedorfk(LOCACAO) = PK idVendedor(VENDEDOR);
+
+FK id_carrofk(LOCACAO) = PK idCarro(CARRO);
+
+FK id_carrokm_fk(QUILOMETRAGEM) = PK idCarro(CARRO);
+
+FK id_combustivelfk(CARRO) = PK idcombustivel(COMBUSTIVEL);

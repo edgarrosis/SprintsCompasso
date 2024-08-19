@@ -16,12 +16,12 @@ Ambos modelos entidade-relacionamento foram feitos utilizando o aplicativo `Br M
 2. **Segunda Forma Normal (2FN)**:
     - A segunda forma normal (2NF) exige que a tabela esteja na 1NF e que todas as colunas não-chave dependam inteiramente da chave primária. Isso significa que cada coluna deve ser totalmente dependente da chave primária e não parcialmente dependente. Em outras palavras, uma tabela atinge a 2NF quando não existem dependências parciais entre colunas e chaves primárias compostas.
 
-    - Nesse ponto surgiram a maioria das tabelas, seguindo a segunda forma normal, sendo elas CLIENTE, LOCACAO, CARRO E VENDEDOR. Destas tabelas apenas a CARRO ainda sofreria mudanças na terceira forma normal.
+    - Nesse ponto surgiram a maioria das tabelas, seguindo a segunda forma normal, sendo elas CLIENTE, LOCACAO, CARRO, VENDEDOR e COMBUSTIVEL. Destas tabelas apenas a CARRO ainda sofreria mudanças na terceira forma normal.
 
 3. **Terceira Forma Normal (3FN)**:
     - A terceira forma normal (3NF) exige que a tabela esteja na 2NF e que não existam dependências transitivas de atributos não-chave. Isso significa que nenhuma coluna não-chave pode depender de outra coluna não-chave, além da chave primária.
 
-    - Nesse ponto surgiram mais duas tabelas, sendo elas COMBUSTIVEL E QUILOMETRAGEM.
+    - Nesse ponto surgiu apenas mais uma tabela, sendo ela QUILOMETRAGEM.
 
 ### Modelo Relacional Final Obitido
 Após a normalização obtive a seguinte organização do banco, nos modelos relacional e entidade-relacionamento.

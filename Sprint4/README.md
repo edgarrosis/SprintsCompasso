@@ -1,4 +1,4 @@
-# Sprint 03
+# Sprint 04
 
 # 1. Introdução
 Esta sprint utlizou a prática com comandos de programação funcional utilizando a linguagem Python, [Python 3 - Curso Completo do Básico ao Avançado](https://compassuol.udemy.com/course/curso-python-3-completo/learn/lecture/12632380?course_portion_id=390144&learning_path_id=5948466#overview), destacando o seu uso com os exercicos, e também o uso do Docker e a conteinerização de programas, [Docker para Desenvolvedores](https://explore.skillbuilder.aws/learn/course/1851/play;state=%5Bobject%20Object%5D;autoplay=0), através das secções do curso . 

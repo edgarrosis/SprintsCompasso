@@ -1,4 +1,5 @@
+.gitignore
 desafio.txt
 movies.csv
 series.csv
-.gitignore
+.env.template

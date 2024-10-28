@@ -12,7 +12,7 @@ def carregar_csv_s3(bucket, arquivo):
     s3 = boto3.session.Session(profile_name='edgar-silva').client('s3')
     try:
         obj = s3.get_object(Bucket=bucket, Key=arquivo)
-        data = obj['Body'].read().decode('utf-8') 
+        data = obj['Body'].read().decode('utf-8')
         df = pd.read_csv(StringIO(data), sep=',', on_bad_lines='skip')  # Lendo o CSV com ',' como delimitador
         print("Arquivo carregado com sucesso.")
         return df
@@ -24,9 +24,7 @@ def carregar_csv_s3(bucket, arquivo):
 df = carregar_csv_s3(bucket_name, arquivo)
 
 if df is not None:
-    # Usando pandasql para realizar as consultas
-
-    # 4.1 e 4.2 Filtrar dados usando dois operadores lógicos e calcular soma e média
+    # Consulta SQL para filtrar dados e adicionar classificação e ordem de meses
     query = """
     SELECT 
         *,
@@ -34,19 +32,53 @@ if df is not None:
             WHEN numero_consultas < 100 THEN 'BAIXA' 
             WHEN numero_consultas >= 100 AND numero_consultas < 200 THEN 'MEDIA'
             ELSE 'ALTA' 
-        END as classificacao,
-        SUBSTR(mês, INSTR(mês, '-') + 2) as mes_somente
+        END AS classificacao,
+        SUBSTR(mês, INSTR(mês, '-') + 2) AS mes_somente,
+        CASE 
+            WHEN mês LIKE '%May%' THEN 1
+            WHEN mês LIKE '%June%' THEN 2
+            WHEN mês LIKE '%July%' THEN 3
+            WHEN mês LIKE '%August%' THEN 4
+            WHEN mês LIKE '%September%' THEN 5
+            WHEN mês LIKE '%October%' THEN 6
+        END AS mes_ordenado,
+        CASE 
+            WHEN numero_consultas >= 200 THEN 1  -- Alta primeiro
+            WHEN numero_consultas >= 100 THEN 2  -- Média em segundo
+            ELSE 3                               -- Baixa por último
+        END AS ordem_classificacao
     FROM df
-    WHERE (mês LIKE '%May%' OR mês LIKE '%June%' OR mês LIKE '%July%' OR mês LIKE '%August%' OR mês LIKE '%September%' OR mês LIKE '%October%')
+    WHERE mês LIKE '%May%' OR mês LIKE '%June%' OR mês LIKE '%July%' 
+       OR mês LIKE '%August%' OR mês LIKE '%September%' OR mês LIKE '%October%'
     """
-    
+
+    # Executa a consulta SQL
     df_filtrado = psql.sqldf(query, locals())
 
-    # Contagem de consultas por classificação e mês
-    consultas_por_mes_classificacao = df_filtrado.groupby(['mes_somente', 'classificacao'])['numero_consultas'].sum().reset_index()
+    # Consulta para agrupar e ordenar por mês e classificação
+    query_consultas_por_mes_classificacao = """
+    SELECT 
+        mes_somente, 
+        classificacao, 
+        SUM(numero_consultas) AS total_consultas
+    FROM df_filtrado
+    GROUP BY mes_somente, classificacao
+    ORDER BY mes_ordenado, ordem_classificacao
+    """
 
-    # Total de consultas por classificação em todo o período
-    total_por_classificacao = df_filtrado.groupby('classificacao')['numero_consultas'].sum().reset_index()
+    # Consulta para totalizar consultas por classificação no período
+    query_total_por_classificacao = """
+    SELECT 
+        classificacao, 
+        SUM(numero_consultas) AS total_consultas
+    FROM df_filtrado
+    GROUP BY classificacao
+    ORDER BY ordem_classificacao
+    """
+
+    # Executa as consultas
+    consultas_por_mes_classificacao = psql.sqldf(query_consultas_por_mes_classificacao, locals())
+    total_por_classificacao = psql.sqldf(query_total_por_classificacao, locals())
 
     # Exibir resultados
     print("\nDataFrame Filtrado:")

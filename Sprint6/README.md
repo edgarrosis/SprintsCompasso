@@ -1,4 +1,4 @@
-# Sprint 05
+# Sprint 06
 
 # 1. Introdução
 
@@ -14,11 +14,24 @@ O tema faz um comparativo entre a nacionalidade e o número de obras do gênero 
 A resolução da Etapa 1 do desafio esta documentada em: [README.md](/Sprint6/Desafio/README.md).
 
 # 3. Exercicios
+Essa sprint contou com 2 exercicios abordando funcionalidades/serviços da plataforma da AWS:
 
+### 1. **AWS Athena**
+- A resolução do exercício contou com a criação de um bucket para armazenar o arquivo .csv [nomes.csv](/Sprint6/Exercicios/AWS_Athena/nomes.csv) e um diretório para armazenar as buscas da query.
 
+- ![Bucket Athena](/Sprint6/Evidencias/Exercicios/exercicio_athena_bucket.png)
+
+- Em seguida foi solicitada uma busca, `3 nomes mais usados em cada década desde o 1950 até hoje`, para testar a a criação do banco de dados e da tabela com o conteudo do arquivo .csv utilizando o Athena. A busca utilizada foi a seguinte: [buscas.sql](/Sprint6/Exercicios/AWS_Athena/busca.sql) e teve como resulado o arquivo [resultado_busca.csv](/Sprint6/Exercicios/AWS_Athena/resultado_busca.csv).
+
+- ![Resultado da Busca](/Sprint6/Evidencias/Exercicios/evidencia_exercicio_athena.png)
+
+### 2. **AWS Lambda**
+- A resolução do exercicio contou com a utilização do bucket criado no exercicio anterior, utilizando uma função lambda da aws para fazer a contagem do numero de linhas do arquivo `nomes.csv`, utlizando um  [Dockerfile](/Sprint6/Exercicios/AWS_Lambda/Dockerfile) e um arquivo .zip com as bibliotecas necessarias do python, [minha-camada-pandas.zip](/Sprint6/Exercicios/AWS_Lambda/minha-camada-pandas.zip) 
+
+- ![Resultado script python](/Sprint6/Evidencias/Exercicios/exercicio_aws_lambda.png)
 
 # 4. Resultado Final Desafio
-
+O script para injestão dos dados no bucket do desafio final do programa de bolsa apartir de uma imagem docker correu sem problemas e foi executada com sucesso.
 
 # 5. Certificados
 - [Noções Básicas de Analytics na AWS - Parte 1](/Sprint6/Certificados/AWS_analytics_part1.pdf)
@@ -30,3 +43,4 @@ A resolução da Etapa 1 do desafio esta documentada em: [README.md](/Sprint6/De
 - [Amazon Redshift Getting Started](/Sprint6/Certificados/AWS_redshift.pdf)
 - [Serverless Analytics](/Sprint6/Certificados/AWS_serverless_analytics.pdf)
 - [Amazon QuickSight - Getting Started](/Sprint6/Certificados/AWS-quicksight.pdf)
+- [Data & Analytics - PB - AWS - Novo - 6/10](/Sprint6/Certificados/sprint6-certificado.jpg)

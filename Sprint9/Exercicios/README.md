@@ -1,0 +1,1 @@
+Não houveram exercicios essa sprint.

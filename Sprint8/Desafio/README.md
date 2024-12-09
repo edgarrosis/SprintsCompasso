@@ -21,12 +21,12 @@ s3://data-lake-edgar-silva/Trusted/Local/CSV/filmes/2024/11/08/
 
 
 ```
-s3://data-lake-edgar-silva/Trusted/TMDB/filmes/2024/11/09/creation_date=1981-06-17/
+s3://data-lake-edgar-silva/Trusted/TMDB/filmes/2024/12/05/
 
-s3://data-lake-edgar-silva/Trusted/TMDB/elenco/2024/11/09/
+s3://data-lake-edgar-silva/Trusted/TMDB/nacionalidades/2024/12/05/
 ```
 ![trusted_tmdb_filme](/Sprint8/Evidencias/Desafio/trusted_tmdb_filmes.png)
-![trusted_tmdb_elenco](/Sprint8/Evidencias/Desafio/trusted_tmdb_elenco.png)
+![trusted_tmdb_nacionalidades](/Sprint8/Evidencias/Desafio/trusted_tmdb_nacionalidade.png)
 
 
 # 3. Configuração do Projeto
@@ -45,7 +45,7 @@ Para fazer a leitura e tratamento dos dados, e armazena-los na camada trusted no
 - ![glue_processa_csv](/Sprint8/Evidencias/Desafio/glue_processa_csv.png)
 
 #### II. Processamento dos JSONs
-- ja o segundo script [processa_tmdb.py](/Sprint8/Desafio/Etapa3/processa_tmdb.py), faz a leitura dos arquivos `JSONs` criados apartir de dados do TMDB utilizando a API, resultado do desafio anterior, armazenados no bucket, faz o devido tratamentos de dados, e em seguida também faz a conversão dos dados para o formato `.parquet` e cria a camada Trusted no bucket. Os dados foram divididos em 2 diretorios, um para os dados relacionados ao elenco dos filmes, e outro para os filmes em si.
+- ja o segundo script [processa_tmdb.py](/Sprint8/Desafio/Etapa3/processa_tmdb.py), faz a leitura dos arquivos `JSONs` criados apartir de dados do TMDB utilizando a API, resultado do desafio anterior, armazenados no bucket, faz o devido tratamentos de dados, e em seguida também faz a conversão dos dados para o formato `.parquet` e cria a camada Trusted no bucket. Os dados foram divididos em 2 diretorios, um para os dados relacionados as nacionalidades dos filmes, e outro para os filmes em si.
 - ![glue_processa_tmdb](/Sprint8/Evidencias/Desafio/glue_processa_tmdb.png)
 
 ## 3.3 Configuração dos Crawlers
@@ -56,7 +56,7 @@ Um Crawler foi configurado para varrer o diretório onde os arquivos PARQUET que
 ![crawler_processa_csv](/Sprint8/Evidencias/Desafio/csv_crawler.png)
 
 ### II. Crawler para TMDB
-Outro Crawler foi configurado para varrer o diretório onde os arquivos PARQUET que o `processa_tmdb` criou foram armazenados. Este Crawler cria duas tabelas no Glue Data Catalog, uma mapeando os dados dos filmes, e outra mapeando os dados dos atores.
+Outro Crawler foi configurado para varrer o diretório onde os arquivos PARQUET que o `processa_tmdb` criou foram armazenados. Este Crawler cria duas tabelas no Glue Data Catalog, uma mapeando os dados dos filmes, e outra mapeando os dados das nacionalidades.
 
 ![crawler_processa_tmdb](/Sprint8/Evidencias/Desafio/tmdb_crawler.png)
 
@@ -144,15 +144,13 @@ job.commit()
 
 3. **Leitura dos Arquivos JSON**: O script lê os dados de múltiplos arquivos JSON diretamente do S3 utilizando a função `create_dynamic_frame.from_options` do Glue Context. Esta função permite especificar o caminho dos arquivos JSON e seu formato.
 
-4. **Explosão da Coluna `cast`**: Nesta etapa, o script transforma a coluna `cast`, que contém uma lista de atores, em múltiplas linhas. Isso cria uma tabela separada de elenco onde cada linha representa um ator.
+4. **Remoção da Coluna `cast` da Tabela de Filmes**: Após a explosão da coluna `cast`, a coluna é removida da tabela de filmes original para evitar redundância. Não foi utilizado na analise final do Desafio.
 
-5. **Remoção da Coluna `cast` da Tabela de Filmes**: Após a explosão da coluna `cast`, a coluna é removida da tabela de filmes original para evitar redundância.
+5. **Conversão para DynamicFrame**: As DataFrames resultantes são convertidas de volta para DynamicFrame, que é o formato necessário para o Glue trabalhar com os dados.
 
-6. **Conversão para DynamicFrame**: As DataFrames resultantes são convertidas de volta para DynamicFrame, que é o formato necessário para o Glue trabalhar com os dados.
+6. **Escrita dos Dados no S3**: Os dados dos filmes e do elenco são escritos no S3 em formato Parquet. O script utiliza a estrutura de diretórios definida nas variáveis para particionar os dados por data de criação (`creation_date`) e pelo identificador do filme (`movie_id`).
 
-7. **Escrita dos Dados no S3**: Os dados dos filmes e do elenco são escritos no S3 em formato Parquet. O script utiliza a estrutura de diretórios definida nas variáveis para particionar os dados por data de criação (`creation_date`) e pelo identificador do filme (`movie_id`).
-
-8. **Commit do Job do Glue**: Finalmente, o script executa um `commit` para finalizar o job do Glue, garantindo que todas as operações foram concluídas com sucesso.
+7. **Commit do Job do Glue**: Finalmente, o script executa um `commit` para finalizar o job do Glue, garantindo que todas as operações foram concluídas com sucesso.
 
 Código Referenciado:
 
@@ -163,7 +161,7 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
-from pyspark.sql.functions import col, explode
+from pyspark.sql.functions import col, explode, array_contains
 from awsglue.job import Job
 from awsglue.dynamicframe import DynamicFrame
 
@@ -171,7 +169,7 @@ from awsglue.dynamicframe import DynamicFrame
 trusted_zone = "Trusted"
 tmdb = "TMDB"
 filmes = "filmes"
-elenco = "elenco"
+nacionalidades = "nacionalidades"
 current_date = datetime.now().strftime("%Y/%m/%d")
 
 bucket_name = "data-lake-edgar-silva"
@@ -201,29 +199,29 @@ datasource0 = glueContext.create_dynamic_frame.from_options(
 # Conversão para DataFrame para operações adicionais
 df = datasource0.toDF()
 
-# Explodir a coluna 'cast' em múltiplas linhas e criar tabela de elenco
-df_cast = df.withColumn("cast", explode("cast")).select(
+# IDs dos gêneros Crime e Guerra
+crime_genre_id = 80
+war_genre_id = 10752
+
+# Filtrar filmes das categorias Crime ou Guerra
+df_filtered = df.filter(array_contains(col("genre_ids"), crime_genre_id) | array_contains(col("genre_ids"), war_genre_id))
+
+# Explodir a coluna 'production_countries' em múltiplas linhas para criar a tabela de nacionalidades
+df_nationalities = df_filtered.withColumn("production_countries", explode("production_countries")).select(
     col("id").alias("movie_id"),
-    col("cast.adult"),
-    col("cast.gender"),
-    col("cast.id").alias("cast_id"),
-    col("cast.known_for_department"),
-    col("cast.name"),
-    col("cast.original_name"),
-    col("cast.popularity"),
-    col("cast.profile_path"),
-    col("cast.cast_id").alias("cast_cast_id"),
-    col("cast.character"),
-    col("cast.credit_id"),
-    col("cast.order")
+    col("production_countries.iso_3166_1").alias("country_code"),
+    col("production_countries.name").alias("country_name")
 )
 
-# Remover a coluna 'cast' na tabela de filmes e adicionar coluna de data de criação para particionamento
-df_filmes = df.drop("cast").withColumn("creation_date", col("release_date"))
+# Remover as colunas 'cast' e 'production_countries' na tabela de filmes, adicionar coluna de data de criação para particionamento e converter `budget` e `revenue` para `bigint`
+df_filmes = df_filtered.drop("cast", "production_countries")\
+    .withColumn("creation_date", col("release_date"))\
+    .withColumn("budget", col("budget").cast("bigint"))\
+    .withColumn("revenue", col("revenue").cast("bigint"))
 
 # Conversão de volta para DynamicFrame
 dynamic_frame_filmes = DynamicFrame.fromDF(df_filmes, glueContext, "dynamic_frame_filmes")
-dynamic_frame_cast = DynamicFrame.fromDF(df_cast, glueContext, "dynamic_frame_cast")
+dynamic_frame_nationalities = DynamicFrame.fromDF(df_nationalities, glueContext, "dynamic_frame_nationalities")
 
 # Escrever dados na camada Trusted em formato Parquet, particionado por data de criação
 # Tabela de filmes
@@ -238,16 +236,16 @@ datasink_filmes = glueContext.write_dynamic_frame.from_options(
     transformation_ctx="datasink_filmes"
 )
 
-# Tabela de elenco
-datasink_cast = glueContext.write_dynamic_frame.from_options(
-    frame=dynamic_frame_cast,
+# Tabela de nacionalidades
+datasink_nationalities = glueContext.write_dynamic_frame.from_options(
+    frame=dynamic_frame_nationalities,
     connection_type="s3",
     connection_options={
-        "path": f"s3://{bucket_name}/{trusted_zone}/{tmdb}/{elenco}/{current_date}/",
+        "path": f"s3://{bucket_name}/{trusted_zone}/{tmdb}/{nacionalidades}/{current_date}/",
         "partitionKeys": ["movie_id"]
     },
     format="parquet",
-    transformation_ctx="datasink_cast"
+    transformation_ctx="datasink_nationalities"
 )
 
 job.commit()

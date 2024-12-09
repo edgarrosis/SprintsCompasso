@@ -87,7 +87,7 @@ from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.transforms import *
 from awsglue.utils import getResolvedOptions
-from pyspark.sql.functions import col, explode, array, udf
+from pyspark.sql.functions import col, explode, split, array, udf, lit, regexp_replace, when, concat_ws
 from pyspark.sql.types import ArrayType, StringType
 from awsglue.job import Job
 from awsglue.dynamicframe import DynamicFrame
@@ -136,8 +136,21 @@ df_tmdb_nacionalidade = datasource_tmdb_nacionalidade.toDF()
 df_csv = df_csv.withColumn("id", col("id").cast("string"))
 df_csv = df_csv.withColumn("anolancamento", col("anolancamento").cast("string"))
 
-# Converter id para string no TMDB Filmes
+# Renomear colunas para combinar com o TMDB Filmes
+df_csv = df_csv.withColumnRenamed("notamedia", "vote_average")
+df_csv = df_csv.withColumnRenamed("numerovotos", "vote_count")
+df_csv = df_csv.withColumnRenamed("id", "csv_id")
+df_csv = df_csv.withColumnRenamed("titulopincipal", "title")
+df_csv = df_csv.withColumnRenamed("titulooriginal", "original_title")
+
+# Padronizar a coluna anolancamento no CSV para o formato completo de data 
+df_csv = df_csv.withColumn("release_date", concat_ws("-", col("anolancamento"), lit("01"), lit("01")))
+
+# Converter id para string no TMDB Filmes e renomear colunas para evitar ambiguidades
 df_tmdb_filmes = df_tmdb_filmes.withColumn("id", col("id").cast("string"))
+df_tmdb_filmes = df_tmdb_filmes.withColumnRenamed("id", "tmdb_id")
+
+df_tmdb_nacionalidade = df_tmdb_nacionalidade.withColumnRenamed("movie_id", "tmdb_movie_id")
 
 # Mapeamento completo de genres
 genre_mapping = {
@@ -168,26 +181,40 @@ def map_genre(genre_ids):
         return []
     return [genre_mapping.get(int(genre_id), "Unknown") for genre_id in genre_ids]
 
-# Registrar a função UDF
-map_genre_udf = udf(map_genre, ArrayType(StringType()))
+# Função UDF para mapear strings de gêneros para IDs
+def map_genre_to_id(genres):
+    inverted_genre_mapping = {v: k for k, v in genre_mapping.items()}
+    if genres is None:
+        return []
+    return [str(inverted_genre_mapping.get(genre, -1)) for genre in genres]
 
-# Mapear genre_ids para strings (transforma a coluna em array de strings)
+# Registrar as funções UDF
+map_genre_udf = udf(map_genre, ArrayType(StringType()))
+map_genre_to_id_udf = udf(map_genre_to_id, ArrayType(StringType()))
+
+# Converter a coluna genero do CSV para uma lista de strings
+df_csv = df_csv.withColumn("genre_ids", split(col("genero"), ", "))
+
+# Mapear genre_ids para strings no TMDB Filmes (transforma a coluna em array de strings)
 df_tmdb_filmes = df_tmdb_filmes.withColumn("genre_ids", map_genre_udf(col("genre_ids")))
 
-# Unir dados das tabelas CSV e TMDB Filmes
-df_combined = df_csv.unionByName(df_tmdb_filmes, allowMissingColumns=True)
+# Padronizar a coluna release_date
+df_tmdb_filmes = df_tmdb_filmes.withColumn("release_date", when(col("release_date").rlike("^\d{4}$"), concat_ws("-", col("release_date"), lit("01"), lit("01")))
+                                        .otherwise(col("release_date")))
 
-# Remover colunas de partição
-df_combined = df_combined.drop("partition_0", "partition_1", "partition_2")
-df_tmdb_filmes = df_tmdb_filmes.drop("partition_0", "partition_1", "partition_2")
-df_tmdb_nacionalidade = df_tmdb_nacionalidade.drop("partition_0", "partition_1", "partition_2")
+# Unir dados das tabelas CSV e TMDB Filmes
+df_combined = df_csv.withColumnRenamed("csv_id", "movie_id").unionByName(
+    df_tmdb_filmes.withColumnRenamed("tmdb_id", "movie_id"), allowMissingColumns=True)
+
+# Mapear a coluna genero para ids de gênero
+df_combined = df_combined.withColumn("genre_id_list", map_genre_to_id_udf(col("genre_ids")))
 
 # Criar dim_genero com ID auto-incremento
-df_dim_genero = spark.createDataFrame([(k, v) for k, v in genre_mapping.items()], ["genero_id", "genero"])
+df_dim_genero = spark.createDataFrame([(str(k), v) for k, v in genre_mapping.items()], ["genero_id", "genero"])
 
 # Criar dim_movie
 df_dim_movie = df_combined.select(
-    col("id").alias("movie_id"),
+    col("movie_id"),
     col("title"),
     col("original_title"),
     col("release_date")
@@ -200,11 +227,58 @@ df_dim_country = df_tmdb_nacionalidade.select(
 ).distinct()
 
 # Criar fact_movie_rating
-df_fact_movie_rating = df_tmdb_filmes.select(
-    col("id").alias("movie_id"),
+df_fact_movie_rating = df_combined.select(
+    col("movie_id"),
     col("vote_average").alias("rating"),
-    col("vote_count")
+    col("vote_count"),
+    col("popularity"),
+    col("budget").cast("bigint"), # Conversão para bigint
+    col("revenue").cast("bigint") # Conversão para bigint
 )
 
 # Explodir genre_ids antes de fazer a comparação
-df_exploded = df
+df_exploded = df_combined.withColumn("genre_id", explode(col("genre_id_list")))
+
+# Criar fact_genero_movie
+df_bridge_genero_movie = df_exploded.join(
+    df_dim_genero, 
+    df_exploded["genre_id"] == df_dim_genero["genero_id"]
+).select(
+    col("movie_id"),
+    col("genero_id")
+)
+
+# Renomear colunas para evitar ambiguidades nas junções
+df_tmdb_filmes = df_tmdb_filmes.withColumnRenamed("tmdb_id", "tmdb_movie_id")
+df_tmdb_nacionalidade = df_tmdb_nacionalidade.withColumnRenamed("tmdb_movie_id", "movie_id")
+
+# Criar fact_movie_country apenas com informações do TMDB Filmes
+df_bridge_movie_country = df_tmdb_filmes.join(
+    df_tmdb_nacionalidade, 
+    df_tmdb_filmes["tmdb_movie_id"] == df_tmdb_nacionalidade["movie_id"]
+).select(
+    col("tmdb_movie_id").alias("movie_id"),
+    col("country_code")
+)
+
+# Salvar as tabelas na camada Refined em formato Parquet
+# Tabela dim_genero
+df_dim_genero.write.mode("overwrite").parquet(f"s3://{bucket_name}/{refined_zone}/dim_genero/{current_date}/")
+
+# Tabela dim_movie
+df_dim_movie.write.mode("overwrite").parquet(f"s3://{bucket_name}/{refined_zone}/dim_movie/{current_date}/")
+
+# Tabela dim_country
+df_dim_country.write.mode("overwrite").parquet(f"s3://{bucket_name}/{refined_zone}/dim_country/{current_date}/")
+
+# Tabela fact_movie_rating
+df_fact_movie_rating.write.mode("overwrite").parquet(f"s3://{bucket_name}/{refined_zone}/fact_movie_rating/{current_date}/")
+
+# Tabela fact_genero_movie
+df_bridge_genero_movie.write.mode("overwrite").parquet(f"s3://{bucket_name}/{refined_zone}/fact_genero_movie/{current_date}/")
+
+# Tabela fact_movie_country
+df_bridge_movie_country.write.mode("overwrite").parquet(f"s3://{bucket_name}/{refined_zone}/fact_movie_country/{current_date}/")
+
+# Encerrar sessão Spark
+job.commit()

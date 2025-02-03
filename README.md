@@ -4,12 +4,18 @@ Olá, sou **Edgar de Rosis da Silva**, atualmente cursando **Engenharia de Softw
 
 <img width="200" src="https://avatars.githubusercontent.com/u/33706301?v=4">
 
-Minhas competencias incluem principalmente Java, Android Studio (Java), Teste de Software, Teste Mutacional, como tambem Git, MySQL, Postgres, Front-end (HTML, CSS, Javascript, React), Documentação de Software e Requisitos de Software, Docker, Python e C++.
+Este repositorio contém 10 Sprints (2 semanas cada Sprint), realizadas ao longo do Programa de Bolsas da Compasso UOL Data & IA, abordando: 
+- Core Languages: SQL, Python (ETL, Pandas, Numpy e mais);
+- Componentes de Cloud: IAM, EC2, VPC, Lambda, Step Function e mais;
+- Serviços analíticos: EMR, Glue, Athena, QuickSight e mais;
+- Processamento de dados com Spark;
+- Visualização e modelagem de dados.
+
+Outras competencias pessoais incluem: Java, Android Studio (Java), Teste de Software, Teste Mutacional, Front-end (HTML, CSS, Javascript, React), Documentação de Software e Requisitos de Software, Docker, Python e C++.
 
 **Experiencias:**
-- Monitor de Anatomia na faculdade de medicina Universidad Central del Paraguay - Pedro Juan Caballero, nos periodos de Fevereiro de 2018 até Dezembro de 2019.
 - Pantanal.dev participante do Modulo Peixe Dourado no periodo de Agosto de 2023 - Dezembro de 2023
-
+- Programa de Bolsas Compasso UOL - Estudio Data & IA no periodo de Julho de2024 - Dezembro de 2024
 
 
 ## Sprints 
